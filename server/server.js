@@ -22,13 +22,14 @@ let i = 1;
 //Emit Listen Handler on connect Event
 io.on('connection',(socket)=>{
     console.log(`User Connected`);
-    
+
     socket.emit('newMessage',generateMessage('Admin','Welcome In Chat Room'));
 
     socket.broadcast.emit('newMessage',generateMessage('Admin','New User Joined'));
-    socket.on('createMessage',(msg)=>{
+    socket.on('createMessage',(msg,callback)=>{
         console.log(msg);
         socket.broadcast.emit('newMessage',generateMessage(msg.from,msg.text));
+        callback();
     });
 
     //Emit Event Liston on disconnect Event

@@ -17,9 +17,19 @@ let i = 1;
 io.on('connection',(socket)=>{
     console.log(`User Connected`);
     
+    
+    socket.emit('newMessage',{
+        from:'test',
+        text:'Test Message From Server',
+        createdAt:'Some Time'
+    })
+
+    socket.on('createMessage',(msg)=>{
+        console.log(msg);
+    })
     socket.on('disconnect',()=>{
         console.log('User was Disconnected');
-    })
+    });
 });
 
 

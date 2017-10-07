@@ -9,17 +9,7 @@
 <body>
     <p>Welcome To Node Chat App</p>
 
-    <script src="socket.io/socket.io.js"></script>
-    
-    <script>
-        let socket = io();
-
-        socket.on('connect',()=>{
-            console.log('Connected To Server');
-        })
-        socket.on('disconnect',()=>{
-            console.log('Disconnect From Server');
-        })
-    </script>
+    <script src="socket.io/socket.io.js"></script>  
+    <script src="js/index.js"></script>
 </body>
 </html>

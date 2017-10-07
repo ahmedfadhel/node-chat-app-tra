@@ -17,14 +17,31 @@ let i = 1;
 io.on('connection',(socket)=>{
     console.log(`User Connected`);
     
-    
+    socket.emit()
+
+    socket.emit('newMessage',{
+        from:'Admin',
+        text:'Welcome In Chat Room',
+        createdAt: new Date().getTime()
+    });
+
+    socket.broadcast.emit('newMessage',{
+        from:'Admin',
+        text: 'New User Joined',
+        createdAt:new Date().getTime()
+    });
     socket.on('createMessage',(msg)=>{
         console.log(msg);
-        io.emit('newMessage',{
+        // io.emit('newMessage',{
+        //     from:msg.from,
+        //     text:msg.text,
+        //     createdAt: new Date().getTime()
+        // });
+        socket.broadcast.emit('newMessage',{
             from:msg.from,
             text:msg.text,
             createdAt: new Date().getTime()
-        });
+        })
     });
     socket.on('disconnect',()=>{
         console.log('User was Disconnected');

@@ -7,22 +7,25 @@ socket.on('connect',function (){
 
 
 socket.on('newMessage',function(msg){
-    console.log(msg);
+    let messageTime = moment(msg.createdAt).format('h:mm a');
     let li = $('<li></li>');
-    li.text(`${msg.from}: ${msg.text}`);
+    li.text(`${msg.from} ${messageTime}: ${msg.text}`);
 
     $('#messages').append(li);
 });
 
 socket.on('newLocationMessage',function(msg){
+    let messageTime = moment(msg.createdAt).format('h:mm a');
     let li = $('<li></li>');
     let a = $('<a target="_blank">My Location </a>');
     
-    li.text(`${msg.from}: `);
+    li.text(`${msg.from} ${messageTime}: `);
     a.attr('href',msg.url);
     li.append(a);
     $('#messages').append(li);
 })
+
+
 $('#message-form').on('submit', function(e) {
     e.preventDefault();
 

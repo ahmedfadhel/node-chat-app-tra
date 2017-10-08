@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 const express = require('express');
 //-------------Local Virables----------------
 
-const {generateMessage} = require('./utils/message');
+const {generateMessage,generateLocationMessage} = require('./utils/message');
 const publicPath = path.join(__dirname,'../public');
 const port = 3000;
 let app = express();
@@ -26,12 +26,19 @@ io.on('connection',(socket)=>{
     socket.emit('newMessage',generateMessage('Admin','Welcome In Chat Room'));
 
     socket.broadcast.emit('newMessage',generateMessage('Admin','New User Joined'));
+   
     socket.on('createMessage',(msg,callback)=>{
         console.log(msg);
-        socket.broadcast.emit('newMessage',generateMessage(msg.from,msg.text));
+        io.emit('newMessage',generateMessage(msg.from,msg.text));
         callback();
     });
 
+    socket.on('createLocationMessage',(msg)=>{
+        // socket.broadcast.emit('newMessage',generateMessage('Admin',`${msg.lat},${msg.long}`));
+        io.emit('newLocationMessage',generateLocationMessage('Admin',msg.lat,msg.long));
+    });
+
+    
     //Emit Event Liston on disconnect Event
     socket.on('disconnect',()=>{
         console.log('User was Disconnected');

@@ -8,21 +8,32 @@ socket.on('connect',function (){
 
 socket.on('newMessage',function(msg){
     let messageTime = moment(msg.createdAt).format('h:mm a');
-    let li = $('<li></li>');
-    li.text(`${msg.from} ${messageTime}: ${msg.text}`);
-
-    $('#messages').append(li);
+    let template = $('#message-template').html();
+    let html = Mustache.render(template,{
+        text: msg.text,
+        from:msg.from,
+        createdAt:messageTime
+    });
+    $('#messages').append(html);
 });
 
 socket.on('newLocationMessage',function(msg){
     let messageTime = moment(msg.createdAt).format('h:mm a');
-    let li = $('<li></li>');
-    let a = $('<a target="_blank">My Location </a>');
+    let locationTemplate = $('#locationmessage-template').html();
+    let html = Mustache.render(locationTemplate,{
+        from:msg.from,
+        url:msg.url,
+        createdAt: messageTime
+    });
+ 
+    $('#messages').append(html);
+    // let li = $('<li></li>');
+    // let a = $('<a target="_blank">My Location </a>');
     
-    li.text(`${msg.from} ${messageTime}: `);
-    a.attr('href',msg.url);
-    li.append(a);
-    $('#messages').append(li);
+    // li.text(`${msg.from} ${messageTime}: `);
+    // a.attr('href',msg.url);
+    // li.append(a);
+    
 })
 
 

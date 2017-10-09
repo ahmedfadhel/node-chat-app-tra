@@ -1,7 +1,19 @@
 let socket = io();
 let messageTextbox = $('[name=message]');
 socket.on('connect',function (){
-    console.log('Connected To Server');
+    // console.log('Connected To Server');
+
+    let params = jQuery.deparam(window.location.search);
+
+    socket.emit('join',params,function (err){
+        if(err){
+            alert(err);
+            window.location.href='/';
+        }else{
+            console.log('No Error');
+        }
+    });
+
 
 });
 
@@ -82,4 +94,15 @@ locationButton.on('click',function(){
 socket.on('disconnect',function (){
     console.log('Disconnect From Server');
 });
+
+
+socket.on('updateUserList',function(users){
+    let ol = $('<ol></ol>');
+
+    users.forEach(function(element) {
+        ol.append($('<li></li>').text(element));
+    });
+
+    $('#users').html(ol);
+})
 
